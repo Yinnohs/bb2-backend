@@ -21,7 +21,7 @@ public class UserController {
     BaseMapper mapper;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserGetDTO> GetOneUserById(@PathVariable() long userId) {
+    public ResponseEntity<User> GetOneUserById(@PathVariable() long userId) {
         try {
 
             User user = this.userService.findUserById(userId);
@@ -29,7 +29,7 @@ public class UserController {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
             UserGetDTO response = mapper.userToGetDTO(user);
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
 
 
@@ -37,7 +37,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping("/local/creation")
     public ResponseEntity<UserGetDTO> createUserNoHash(@RequestBody() @Validated UserCreateDTO payload){
 
         try {
