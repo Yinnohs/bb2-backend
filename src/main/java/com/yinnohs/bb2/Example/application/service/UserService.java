@@ -42,6 +42,12 @@ public class UserService {
     }
 
     public User softDeleteUser (long userId){
-       return  this.repository.updateUserIsDelete(userId);
+
+        User user = this.findUserById(userId);
+
+        user.setIsDeleted(true);
+
+        return this.repository.save(user);
+
     }
 }
