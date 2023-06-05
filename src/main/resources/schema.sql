@@ -1,4 +1,3 @@
-
 CREATE TABLE users (
   user_id BIGINT AUTO_INCREMENT,
   name VARCHAR,

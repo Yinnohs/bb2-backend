@@ -11,33 +11,63 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/api/v1/user")
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/user")
 public class UserController {
 
-    @Autowired
+
     private UserService userService;
 
-    @Autowired
     BaseMapper mapper;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> GetOneUserById(@PathVariable() long userId) {
+    @Autowired
+    public  UserController(UserService userService, BaseMapper mapper){
+        this.userService = userService;
+        this.mapper = mapper;
+    }
+
+    public  UserController(){}
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserGetDTO>> getAllUsers(){
         try {
 
+            List<User> users = this.userService.findAllUsers();
+            List<UserGetDTO> response = new ArrayList<>();
+            if (users.size() > 0){
+                for(User user : users){
+                    UserGetDTO userGetDTO = mapper.userToGetDTO(user);
+                    response.add(userGetDTO);
+                }
+
+            }
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserGetDTO> GetOneUserById(@PathVariable("userId") long userId) {
+        try {
             User user = this.userService.findUserById(userId);
             if (user == null) {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
             UserGetDTO response = mapper.userToGetDTO(user);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-
-
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PostMapping("/local/creation")
+    @PostMapping("/local/new")
     public ResponseEntity<UserGetDTO> createUserNoHash(@RequestBody() @Validated UserCreateDTO payload){
 
         try {
@@ -48,8 +78,7 @@ public class UserController {
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch(Exception e) {
-
-
+            e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

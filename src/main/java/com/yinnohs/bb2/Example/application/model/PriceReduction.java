@@ -1,19 +1,30 @@
-//package com.yinnohs.bb2.Example.application.model;
-//
-//import jakarta.persistence.*;
-//
-//import java.time.LocalDate;
-//
-//@Entity
-//public class PriceReduction {
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-//     @Column(name = "price_reduction_id")
-//     private long priceReductionId;
-//
-//     private double reducedPrice;
-//
-//     private LocalDate startDate;
-//
-//     private LocalDate endDate;
-//}
+package com.yinnohs.bb2.Example.application.model;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+
+import java.time.LocalDate;
+import java.util.Collection;
+
+@Entity
+public class PriceReduction {
+     @Id
+     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+     @Column(name = "price_reduction_id")
+     private long priceReductionId;
+
+     @Column(name = "reduction_price", nullable = false)
+     private double reducedPrice;
+
+     @CreatedDate
+     @Column(name = "start_date")
+     private LocalDate startDate;
+
+     @Column(name = "end_date")
+     private LocalDate endDate;
+
+     @JsonBackReference
+     @ManyToMany(mappedBy = "priceReductions", fetch = FetchType.LAZY)
+     private Collection<Item> items;
+}
