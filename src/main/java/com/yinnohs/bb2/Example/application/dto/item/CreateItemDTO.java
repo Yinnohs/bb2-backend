@@ -18,9 +18,6 @@ import java.util.Collection;
 @Getter
 @Setter
 public class CreateItemDTO {
-    
-    @JsonProperty("item_id")
-    private long itemId;
 
     @JsonProperty("code")
     private long code;
