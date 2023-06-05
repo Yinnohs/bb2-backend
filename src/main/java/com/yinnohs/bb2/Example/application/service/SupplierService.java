@@ -29,7 +29,7 @@ public class SupplierService {
             return null;
         }
 
-        Supplier currentSupplier = this.getOneSupplier(updateSupplierDTO.getSupplierId());
+        Supplier currentSupplier = this.findSupplierById(updateSupplierDTO.getSupplierId());
 
         String name = updateSupplierDTO.getName();
         if (name != null || name.isEmpty()){
@@ -45,11 +45,11 @@ public class SupplierService {
 
     }
 
-    public Supplier getOneSupplier(long supplierId){
+    public Supplier findSupplierById(long supplierId){
         return this.repository.findById(supplierId).orElse(null);
     }
 
-    public List<Supplier> getAllSuppliers(){
+    public List<Supplier> findAllSuppliers(){
         return this.repository.findAll();
     }
 }
