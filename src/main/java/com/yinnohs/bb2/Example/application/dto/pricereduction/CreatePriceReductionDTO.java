@@ -1,14 +1,17 @@
 package com.yinnohs.bb2.Example.application.dto.pricereduction;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yinnohs.bb2.Example.application.model.Item;
-import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Collection;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class CreatePriceReductionDTO {
     @JsonProperty("reduced_price")
     private double reducedPrice;
