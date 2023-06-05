@@ -3,13 +3,18 @@ package com.yinnohs.bb2.Example.application.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.yinnohs.bb2.Example.application.enums.ItemState;
 import jakarta.persistence.*;
-import jdk.vm.ci.meta.Local;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
-
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Item {
 
