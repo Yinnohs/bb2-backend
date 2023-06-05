@@ -1,4 +1,4 @@
-package com.yinnohs.bb2.Example.application.middleware;
+package com.yinnohs.bb2.Example.application.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
