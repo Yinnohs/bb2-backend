@@ -17,7 +17,7 @@ public class Supplier {
     private String name;
 
     @Column(name = "country")
-    private String Country;
+    private String country;
 
     @JsonBackReference
     @ManyToMany(mappedBy = "suppliers", fetch = FetchType.LAZY)
