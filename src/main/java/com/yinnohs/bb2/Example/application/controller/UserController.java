@@ -6,6 +6,8 @@ import com.yinnohs.bb2.Example.application.dto.user.UserUpdateDTO;
 import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
 import com.yinnohs.bb2.Example.application.model.User;
 import com.yinnohs.bb2.Example.application.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
@@ -22,15 +25,13 @@ public class UserController {
 
     private UserService userService;
 
-    BaseMapper mapper;
+    private BaseMapper mapper;
 
     @Autowired
     public  UserController(UserService userService, BaseMapper mapper){
         this.userService = userService;
         this.mapper = mapper;
     }
-
-    public  UserController(){}
 
     @GetMapping("/all")
     public ResponseEntity<List<UserGetDTO>> getAllUsers(){
