@@ -42,7 +42,7 @@ public class UserService {
         return this.repository.save(user);
     }
 
-    public User UpdateUser (UserUpdateDTO userData){
+    public User updateUser (UserUpdateDTO userData){
 
         User user = this.findUserById(userData.getUserId());
 

@@ -2,6 +2,7 @@ package com.yinnohs.bb2.Example.application.controller;
 
 import com.yinnohs.bb2.Example.application.dto.user.UserCreateDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserGetDTO;
+import com.yinnohs.bb2.Example.application.dto.user.UserUpdateDTO;
 import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
 import com.yinnohs.bb2.Example.application.model.User;
 import com.yinnohs.bb2.Example.application.service.UserService;
@@ -68,13 +69,30 @@ public class UserController {
     }
 
     @PostMapping("/local/new")
-    public ResponseEntity<UserGetDTO> createUserNoHash(@RequestBody() @Validated UserCreateDTO payload){
+    public ResponseEntity<UserGetDTO> createUser(@RequestBody() @Validated UserCreateDTO payload){
 
         try {
 
             User newUser = this.mapper.userCreateDTOTouser(payload);
             User createdUser = this.userService.createUser(newUser);
             UserGetDTO response = this.mapper.userToGetDTO(createdUser);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<UserGetDTO> updateUser(@RequestBody() @Validated UserUpdateDTO payload){
+        try {
+            if (payload == null){
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+            User updatedUser = this.userService.updateUser(payload);
+
+            UserGetDTO response = this.mapper.userToGetDTO(updatedUser);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
         }catch(Exception e) {
