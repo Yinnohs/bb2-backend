@@ -18,16 +18,12 @@ public class UserUpdateDTO {
 
     private  long userId;
 
-
     private  String name;
-
 
     private  String surname;
 
-
     private  String email;
 
-
-    private LocalDate creationDate;
+    private String password;
 
 }

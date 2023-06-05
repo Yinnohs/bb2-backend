@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class UserGetDTO implements IUser {
+public class UserGetDTO implements IUser, Serializable {
 
     private  long userId;
 
