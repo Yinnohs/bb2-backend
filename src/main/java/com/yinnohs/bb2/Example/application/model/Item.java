@@ -3,8 +3,10 @@ package com.yinnohs.bb2.Example.application.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.yinnohs.bb2.Example.application.enums.ItemState;
 import jakarta.persistence.*;
+import jdk.vm.ci.meta.Local;
 import org.springframework.data.annotation.CreatedDate;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Date;
 
@@ -29,7 +31,7 @@ public class Item {
 
     @CreatedDate
     @Column(name = "creation_date", nullable = false)
-    private Date creationDate;
+    private LocalDate creationDate;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
