@@ -22,9 +22,6 @@ public class UpdateItemDTO {
     @JsonProperty("item_id")
     private long itemId;
 
-    @JsonProperty("code")
-    private long code;
-
     @JsonProperty("description")
     private String description;
 
