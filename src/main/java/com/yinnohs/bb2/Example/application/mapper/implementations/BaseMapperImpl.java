@@ -47,12 +47,23 @@ public class BaseMapperImpl implements BaseMapper  {
         }
 
         Supplier supplier = new Supplier();
-        supplier.setCountry(createSupplierDTO.get);
+        supplier.setCountry(createSupplierDTO.getCountry());
+        supplier.setName(createSupplierDTO.getName());
 
+        return supplier;
     }
 
     @Override
     public SupplierGetDTO supplierToGetDTO(Supplier supplier) {
-        return null;
+        if (supplier == null){
+            return  null;
+        }
+
+        SupplierGetDTO supplierGetDTO = new SupplierGetDTO();
+        supplierGetDTO.setSupplierId(supplier.getSupplierId());
+        supplierGetDTO.setCountry(supplier.getCountry());
+        supplierGetDTO.setName(supplier.getName());
+
+        return supplierGetDTO;
     }
 }
