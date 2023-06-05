@@ -18,7 +18,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @RestController
-@RequestMapping("/api/v1/suppier")
+@RequestMapping("/api/v1/supplier")
 public class SupplierController {
     private SupplierService supplierService;
     private BaseMapper mapper;

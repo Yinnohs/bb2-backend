@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +39,10 @@ public class UserService {
         String password = passwordEncoder.encode(user.getPassword());
 
         user.setPassword(password);
+
+        LocalDate currentDate = LocalDate.now();
+
+        user.setCreationDate(currentDate);
         
         return this.repository.save(user);
     }

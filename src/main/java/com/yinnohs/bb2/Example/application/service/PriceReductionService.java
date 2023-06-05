@@ -14,18 +14,18 @@ public class PriceReductionService {
     @Autowired
     private PriceReductionRepository repository;
 
-    public PriceReduction createPriceReduction (PriceReduction priceReduction){
+    public PriceReduction createPriceReduction(PriceReduction priceReduction){
         if (priceReduction == null){
             return null;
         }
         return this.repository.save(priceReduction);
     }
 
-    public PriceReduction getOnePriceReduction(long priceReductionId){
+    public PriceReduction findPriceReductionById(long priceReductionId){
         return this.repository.findById(priceReductionId).orElse(null);
     }
 
-    public List<PriceReduction> getAllPriceReductions(){
+    public List<PriceReduction> findAllPriceReductions(){
         return  this.repository.findAll();
     }
 
@@ -34,7 +34,7 @@ public class PriceReductionService {
 
         }
 
-        PriceReduction currentPriceReduction = this.getOnePriceReduction(updatePriceReductionDTO.getPriceReductionId());
+        PriceReduction currentPriceReduction = this.findPriceReductionById(updatePriceReductionDTO.getPriceReductionId());
 
         if(currentPriceReduction == null){
             return null;
