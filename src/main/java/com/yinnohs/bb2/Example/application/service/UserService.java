@@ -95,6 +95,6 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-       return this.repository.findUserByEmail(username).orElse(null);
+       return this.repository.findUserByEmail(username).orElseThrow(()-> new  UsernameNotFoundException("wrong credentials"));
     }
 }

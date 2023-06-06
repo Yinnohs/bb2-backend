@@ -1,6 +1,5 @@
 package com.yinnohs.bb2.Example.application.dto.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinnohs.bb2.Example.domain.models.interfaces.IUser;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -10,6 +9,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
