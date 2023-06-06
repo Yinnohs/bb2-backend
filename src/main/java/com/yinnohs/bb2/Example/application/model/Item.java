@@ -21,11 +21,11 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "item_id")
-    private long itemId;
+    private Long itemId;
 
 
     @Column(name = "code" , nullable = false, unique = true)
-    private long code;
+    private Long code;
 
     @Column(name = "description", nullable = false)
     private String description;

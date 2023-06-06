@@ -30,7 +30,7 @@ public class ItemService {
         if (item == null){
             return null;
         }
-        
+
         LocalDate currentDate = LocalDate.now();
 
         item.setCreationDate(currentDate);

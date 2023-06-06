@@ -22,10 +22,10 @@ import java.util.Collection;
 public class ItemGetDTO {
 
     @JsonProperty("item_id")
-    private long itemId;
+    private Long itemId;
 
     @JsonProperty("code")
-    private long code;
+    private Long code;
 
     @JsonProperty("description")
     private String description;

@@ -20,7 +20,7 @@ import java.util.Collection;
 public class UpdateItemDTO {
 
     @JsonProperty("item_id")
-    private long itemId;
+    private Long itemId;
 
     @JsonProperty("description")
     private String description;

@@ -20,7 +20,7 @@ import java.util.Collection;
 public class CreateItemDTO {
 
     @JsonProperty("code")
-    private long code;
+    private Long code;
 
     @JsonProperty("description")
     private String description;

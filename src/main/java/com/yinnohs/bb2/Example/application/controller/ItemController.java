@@ -78,9 +78,8 @@ public class ItemController {
         try {
             if (
                     createItemDTO == null
-                            && createItemDTO.getCode() < 0
                             && createItemDTO.getDescription().isEmpty()
-                            && createItemDTO.getDescription() == null
+                            || createItemDTO.getDescription() == null
             ) {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
