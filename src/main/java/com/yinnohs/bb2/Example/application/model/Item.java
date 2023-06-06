@@ -3,22 +3,29 @@ package com.yinnohs.bb2.Example.application.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.yinnohs.bb2.Example.application.enums.ItemState;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
-
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "item_id")
-    private long itemId;
+    private Long itemId;
 
 
     @Column(name = "code" , nullable = false, unique = true)
-    private long code;
+    private Long code;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -29,15 +36,15 @@ public class Item {
 
     @CreatedDate
     @Column(name = "creation_date", nullable = false)
-    private Date creationDate;
+    private LocalDate creationDate;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "creator")
     private  User creator;
 
     @JsonBackReference
-    @ManyToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "items_suppliers",
             joinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "item_id"),
@@ -46,7 +53,7 @@ public class Item {
     private Collection<Supplier> suppliers;
 
     @JsonBackReference
-    @ManyToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "items_price_reductions",
             joinColumns = @JoinColumn(name = "price_reduction_id", referencedColumnName = "item_id"),

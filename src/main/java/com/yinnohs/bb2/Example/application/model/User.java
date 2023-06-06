@@ -47,7 +47,7 @@ public class User implements IUser {
     private  Boolean isDeleted;
 
     @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "item_id")
     private Collection<Item> items;
 }

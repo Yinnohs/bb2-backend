@@ -28,6 +28,6 @@ public class Supplier {
     private String country;
 
     @JsonBackReference
-    @ManyToMany(mappedBy = "suppliers", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "suppliers", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     private Collection<Item> items;
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class UserService {
@@ -30,6 +31,18 @@ public class UserService {
         Optional<User> user =  this.repository.findById(id);
         return user.orElse(null);
 
+    }
+
+    public CompletableFuture<User> findUserByIdFuture(Long userId){
+        if (userId == null){
+            return null;
+        }
+
+        CompletableFuture<User> futureData = CompletableFuture.supplyAsync(()->{
+            return this.repository.findById(userId).orElse(null);
+        });
+
+        return futureData;
     }
 
     public User createUser (User user){

@@ -6,7 +6,9 @@ import com.yinnohs.bb2.Example.application.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class SupplierService {
@@ -49,6 +51,17 @@ public class SupplierService {
         return this.repository.findById(supplierId).orElse(null);
     }
 
+    public CompletableFuture<Collection<Supplier>> findSuppliersByIdFuture(Collection<Long> supplierIds ){
+        if (supplierIds == null ||supplierIds.size() == 0){
+            return null;
+        }
+
+        CompletableFuture<Collection<Supplier>> futureSuppliers = CompletableFuture.supplyAsync(()->{
+           return this.repository.findAllById(supplierIds);
+        });
+
+        return futureSuppliers;
+    }
     public List<Supplier> findAllSuppliers(){
         return this.repository.findAll();
     }
