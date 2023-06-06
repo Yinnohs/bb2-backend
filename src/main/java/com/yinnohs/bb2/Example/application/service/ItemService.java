@@ -1,16 +1,22 @@
 package com.yinnohs.bb2.Example.application.service;
 
 import com.yinnohs.bb2.Example.application.dto.item.UpdateItemDTO;
+import com.yinnohs.bb2.Example.application.dto.pricereduction.PriceReductionGetDTO;
+import com.yinnohs.bb2.Example.application.dto.supplier.SupplierGetDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserGetDTO;
 import com.yinnohs.bb2.Example.application.enums.ItemState;
 import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
 import com.yinnohs.bb2.Example.application.model.Item;
+import com.yinnohs.bb2.Example.application.model.PriceReduction;
+import com.yinnohs.bb2.Example.application.model.Supplier;
 import com.yinnohs.bb2.Example.application.model.User;
 import com.yinnohs.bb2.Example.application.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -24,6 +30,7 @@ public class ItemService {
         if (item == null){
             return null;
         }
+        
         LocalDate currentDate = LocalDate.now();
 
         item.setCreationDate(currentDate);
@@ -75,7 +82,25 @@ public class ItemService {
             currentItem.setCreator(user);
         }
 
-        //TODO: add here logic to transform suppliers and price
+        Collection<SupplierGetDTO> supplierGetDTOS = updateItemDTO.getSuppliers();
+        if (supplierGetDTOS != null && supplierGetDTOS.size() > 0){
+            Collection<Supplier> suppliers = new HashSet<>();
+            for (SupplierGetDTO supplierGetDTO : supplierGetDTOS) {
+                Supplier supplier = this.mapper.supplierGetDTOToSupplier(supplierGetDTO);
+                suppliers.add(supplier);
+            }
+            currentItem.setSuppliers(suppliers);
+        }
+
+        Collection<PriceReductionGetDTO> priceReductionGetDTOS = updateItemDTO.getPriceReductions();
+        if (priceReductionGetDTOS != null && priceReductionGetDTOS.size() > 0){
+            Collection<PriceReduction> priceReductions = new HashSet<>();
+            for (PriceReductionGetDTO priceReductionGetDTO : priceReductionGetDTOS) {
+                PriceReduction priceReduction = this.mapper.priceReductionGetDTOToPriceReduction(priceReductionGetDTO);
+                priceReductions.add(priceReduction);
+            }
+            currentItem.setPriceReductions(priceReductions);
+        }
 
         return currentItem;
 
