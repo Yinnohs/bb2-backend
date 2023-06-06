@@ -78,6 +78,7 @@ public class ItemController {
         try {
             if (
                     createItemDTO == null
+                            && createItemDTO.getCode() == null
                             && createItemDTO.getDescription().isEmpty()
                             || createItemDTO.getDescription() == null
             ) {
