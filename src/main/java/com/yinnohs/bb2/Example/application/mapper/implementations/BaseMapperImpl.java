@@ -163,6 +163,7 @@ public class BaseMapperImpl implements BaseMapper  {
 
         itemDto.setItemId(item.getItemId());
         itemDto.setCode(item.getCode());
+        itemDto.setPrice(item.getPrice());
         itemDto.setDescription(item.getDescription());
         itemDto.setItemState(item.getItemState());
         itemDto.setCreationDate(item.getCreationDate());

@@ -30,6 +30,9 @@ public class Item {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "price")
+    private Double price;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "item_state", nullable = false)
     private ItemState itemState;

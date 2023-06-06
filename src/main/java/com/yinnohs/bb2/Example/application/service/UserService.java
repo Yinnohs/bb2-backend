@@ -4,6 +4,9 @@ import com.yinnohs.bb2.Example.application.dto.user.UserUpdateDTO;
 import com.yinnohs.bb2.Example.application.model.User;
 import com.yinnohs.bb2.Example.application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,12 +17,13 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class UserService {
-
-    private static final int bcryptSalts = 10;
+public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private PasswordEncoder encoder;
 
     public List<User> findAllUsers(){
         List<User> users = this.repository.findAll();
@@ -47,11 +51,11 @@ public class UserService {
 
     public User createUser (User user){
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(bcryptSalts);
-
-        String password = passwordEncoder.encode(user.getPassword());
+        String password = encoder.encode(user.getPassword());
 
         user.setPassword(password);
+
+        user.setDeleted(false);
 
         LocalDate currentDate = LocalDate.now();
 
@@ -83,9 +87,14 @@ public class UserService {
 
         User user = this.findUserById(userId);
 
-        user.setIsDeleted(true);
+        user.setDeleted(true);
 
         return this.repository.save(user);
 
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+       return this.repository.findUserByEmail(username).orElse(null);
     }
 }

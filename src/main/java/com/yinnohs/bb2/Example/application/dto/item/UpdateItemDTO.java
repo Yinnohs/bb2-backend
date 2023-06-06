@@ -25,6 +25,9 @@ public class UpdateItemDTO {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("price")
+    private Double price;
+
     @JsonProperty("item_state")
     private ItemState itemState;
 
