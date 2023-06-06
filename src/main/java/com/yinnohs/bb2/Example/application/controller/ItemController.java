@@ -38,9 +38,11 @@ public class ItemController {
             List<Item> items = null;
             if (state != null) {
                 items = this.itemService.findAllItems();
+            }else{
+                items = this.itemService.findAllItemsByState(state);
             }
 
-            items = this.itemService.findAllItemsByState(state);
+
 
             List<ItemGetDTO> response = new ArrayList<>();
 
