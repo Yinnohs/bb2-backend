@@ -8,12 +8,14 @@ import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
 import com.yinnohs.bb2.Example.application.model.Item;
 import com.yinnohs.bb2.Example.application.service.ItemService;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @NoArgsConstructor
 @RestController
@@ -22,6 +24,7 @@ public class ItemController {
     private ItemService itemService;
     private BaseMapper mapper;
 
+    @Autowired
     public ItemController(ItemService itemService, BaseMapper mapper) {
         this.itemService = itemService;
         this.mapper = mapper;
@@ -74,7 +77,7 @@ public class ItemController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ItemGetDTO> createItem(@RequestBody() CreateItemDTO createItemDTO) {
+    public CompletableFuture<ResponseEntity<ItemGetDTO>> createItem(@RequestBody() CreateItemDTO createItemDTO) {
         try {
             if (
                     createItemDTO == null
@@ -82,18 +85,20 @@ public class ItemController {
                             && createItemDTO.getDescription().isEmpty()
                             || createItemDTO.getDescription() == null
             ) {
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+              return CompletableFuture.supplyAsync(()->  new ResponseEntity<>(null, HttpStatus.BAD_REQUEST));
             }
 
-            Item newItem = this.mapper.createItemDTOToItem(createItemDTO);
-            Item createdItem = this.itemService.createItem(newItem);
-            ItemGetDTO response = this.mapper.itemToGetDTO(createdItem);
+            CompletableFuture<Item> createdItemFuture = this.itemService.createItem(createItemDTO);
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
+           return createdItemFuture.thenApply((item)-> {
+                ItemGetDTO response = this.mapper.itemToGetDTO(item);
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return CompletableFuture.supplyAsync(()-> new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR));
         }
     }
 

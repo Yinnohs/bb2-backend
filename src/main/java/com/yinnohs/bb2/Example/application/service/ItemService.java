@@ -1,5 +1,6 @@
 package com.yinnohs.bb2.Example.application.service;
 
+import com.yinnohs.bb2.Example.application.dto.item.CreateItemDTO;
 import com.yinnohs.bb2.Example.application.dto.item.UpdateItemDTO;
 import com.yinnohs.bb2.Example.application.dto.pricereduction.PriceReductionGetDTO;
 import com.yinnohs.bb2.Example.application.dto.supplier.SupplierGetDTO;
@@ -11,31 +12,65 @@ import com.yinnohs.bb2.Example.application.model.PriceReduction;
 import com.yinnohs.bb2.Example.application.model.Supplier;
 import com.yinnohs.bb2.Example.application.model.User;
 import com.yinnohs.bb2.Example.application.repository.ItemRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemService {
     @Autowired
     private ItemRepository repository;
     @Autowired
+    private PriceReductionService priceReductionService;
+
+    @Autowired
+    private SupplierService supplierService;
+
+    @Autowired
+
+    private UserService userService;
+
+    @Autowired
     private BaseMapper mapper;
 
-    public Item createItem (Item item){
-        if (item == null){
+@Transactional
+    public CompletableFuture<Item> createItem (CreateItemDTO createItemDTO) throws ExecutionException, InterruptedException {
+        if (createItemDTO == null){
             return null;
         }
 
-        LocalDate currentDate = LocalDate.now();
+        CompletableFuture<User> creatorFuture = this.userService.findUserByIdFuture(createItemDTO.getCreatorId());
+        CompletableFuture<Collection<Supplier>> suppliersFuture = this.supplierService.findSuppliersByIdFuture(createItemDTO.getSupplierIds());
+        CompletableFuture<Collection<PriceReduction>> priceReductionFuture = this.priceReductionService.findPriceReductionsByIdFuture(createItemDTO.getPriceReductionIds());
 
-        item.setCreationDate(currentDate);
+       return CompletableFuture.allOf(
+                creatorFuture,
+                suppliersFuture,
+                priceReductionFuture
+        ).thenApply((unused)-> {
+            Item item = this.mapper.createItemDTOToItem(createItemDTO);
+            item.setItemState(ItemState.Active);
+            item.setCreationDate(LocalDate.now());
+            item.setCreator(creatorFuture.join());
+            item.setSuppliers(suppliersFuture.join());
+            item.setPriceReductions(priceReductionFuture.join());
 
-        return this.repository.save(item);
+            Item futureResponse =  this.repository.save(item);
+
+            return  futureResponse;
+        });
     }
 
     public Item findItemById (Long itemId){

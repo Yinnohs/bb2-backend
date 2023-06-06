@@ -33,6 +33,6 @@ public class PriceReduction {
      private LocalDate endDate;
 
      @JsonBackReference
-     @ManyToMany(mappedBy = "priceReductions", fetch = FetchType.LAZY)
+     @ManyToMany(mappedBy = "priceReductions", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
      private Collection<Item> items;
 }

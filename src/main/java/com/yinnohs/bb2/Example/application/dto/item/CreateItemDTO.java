@@ -1,22 +1,14 @@
 package com.yinnohs.bb2.Example.application.dto.item;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yinnohs.bb2.Example.application.dto.pricereduction.PriceReductionGetDTO;
-import com.yinnohs.bb2.Example.application.dto.supplier.SupplierGetDTO;
-import com.yinnohs.bb2.Example.application.dto.user.UserGetDTO;
-import com.yinnohs.bb2.Example.application.enums.ItemState;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Collection;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
 public class CreateItemDTO {
 
     @JsonProperty("code")
@@ -25,18 +17,63 @@ public class CreateItemDTO {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("item_state")
-    private ItemState itemState;
-
     @JsonProperty("creation_date")
     private LocalDate creationDate;
 
-    @JsonProperty("creator")
-    private UserGetDTO creator;
+    @JsonProperty("creator_id")
+    private Long creatorId;
 
-    @JsonProperty("supplier")
-    private Collection<SupplierGetDTO> suppliers;
+    @JsonProperty("supplier_ids")
+    private Collection<Long> supplierIds;
 
-    @JsonProperty("priceReductions")
-    private Collection <PriceReductionGetDTO> priceReductions;
+    @JsonProperty("price_reduction_ids")
+    private Collection <Long> priceReductionIds;
+
+    public Long getCode() {
+        return code;
+    }
+
+    public void setCode(Long code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public Collection<Long> getSupplierIds() {
+        return supplierIds;
+    }
+
+    public void setSupplierIds(Collection<Long> supplierIds) {
+        this.supplierIds = supplierIds;
+    }
+
+    public Collection<Long> getPriceReductionIds() {
+        return priceReductionIds;
+    }
+
+    public void setPriceReductionIds(Collection<Long> priceReductionIds) {
+        this.priceReductionIds = priceReductionIds;
+    }
 }

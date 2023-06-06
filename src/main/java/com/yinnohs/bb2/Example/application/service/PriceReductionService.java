@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class PriceReductionService {
@@ -23,6 +25,18 @@ public class PriceReductionService {
 
     public PriceReduction findPriceReductionById(long priceReductionId){
         return this.repository.findById(priceReductionId).orElse(null);
+    }
+
+    public CompletableFuture<Collection<PriceReduction>> findPriceReductionsByIdFuture(Collection<Long> priceReductionIds){
+        if(priceReductionIds == null || priceReductionIds.size() == 0){
+            return  null;
+        }
+
+       CompletableFuture<Collection<PriceReduction>> data = CompletableFuture.supplyAsync(()->{
+           return this.repository.findAllById(priceReductionIds);
+       });
+
+       return  data;
     }
 
     public List<PriceReduction> findAllPriceReductions(){

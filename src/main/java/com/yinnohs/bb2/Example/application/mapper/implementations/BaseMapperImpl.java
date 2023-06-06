@@ -206,35 +206,8 @@ public class BaseMapperImpl implements BaseMapper  {
 
         item.setCode(createItemDTO.getCode());
         item.setDescription(createItemDTO.getDescription());
-        item.setItemState(createItemDTO.getItemState());
         item.setCreationDate(createItemDTO.getCreationDate());
 
-
-        UserGetDTO creator = createItemDTO.getCreator();
-        if(creator != null){
-            User user = this.userGetDTOToUser(creator);
-            item.setCreator(user);
-        }
-
-        Collection<SupplierGetDTO> supplierGetDTOs = createItemDTO.getSuppliers();
-        if(supplierGetDTOs != null){
-            Collection<Supplier> suppliers = new HashSet<>();
-            for(SupplierGetDTO supplierGetDTO : supplierGetDTOs) {
-                Supplier supplier = this.supplierGetDTOToSupplier(supplierGetDTO);
-                suppliers.add(supplier);
-            }
-            item.setSuppliers(suppliers);
-        }
-
-        Collection<PriceReductionGetDTO> priceReductionGetDTOs = createItemDTO.getPriceReductions();
-        if(priceReductionGetDTOs != null){
-            Collection<PriceReduction> priceReductions  = new HashSet<>();
-            for(PriceReductionGetDTO priceReductionGetDTO : priceReductionGetDTOs) {
-                PriceReduction priceReduction = this.priceReductionGetDTOToPriceReduction(priceReductionGetDTO);
-                priceReductions.add(priceReduction);
-            }
-            item.setPriceReductions(priceReductions);
-        }
         return  item;
     }
 }

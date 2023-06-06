@@ -39,12 +39,12 @@ public class Item {
     private LocalDate creationDate;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinColumn(name = "creator")
     private  User creator;
 
     @JsonBackReference
-    @ManyToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "items_suppliers",
             joinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "item_id"),
@@ -53,7 +53,7 @@ public class Item {
     private Collection<Supplier> suppliers;
 
     @JsonBackReference
-    @ManyToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "items_price_reductions",
             joinColumns = @JoinColumn(name = "price_reduction_id", referencedColumnName = "item_id"),
