@@ -1,5 +1,6 @@
 package com.yinnohs.bb2.Example.application.service;
 
+import com.yinnohs.bb2.Example.application.dto.auth.UserLoginDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserCreateDTO;
 import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
 import com.yinnohs.bb2.Example.application.model.Role;
@@ -11,8 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -48,6 +51,29 @@ public class AuthService {
 
 
         return this.userRepository.save(user);
+
+    }
+
+    public User localLogin(UserLoginDTO userLoginDTO){
+
+        if(userLoginDTO == null){
+            return null;
+        }
+
+        Optional<User> user = this.userRepository.findUserByEmail(userLoginDTO.getEmail());
+        String encodedPassword = this.encoder.encode(userLoginDTO.getPassword());
+
+        if (!user.isPresent()){
+            return null;
+        }
+
+        User currentUser = user.get();
+
+        if (user.isPresent() && !encodedPassword.equals(currentUser.getPassword())) {
+            return null;
+        }
+
+        return currentUser;
 
     }
 
