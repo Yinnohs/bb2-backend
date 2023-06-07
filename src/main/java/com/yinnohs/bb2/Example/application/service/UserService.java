@@ -143,6 +143,10 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public void deleteUser (Long userId){
+        this.userRepository.deleteById(userId);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
        return this.userRepository.findUserByEmail(username).orElseThrow(()-> new  UsernameNotFoundException("wrong credentials"));

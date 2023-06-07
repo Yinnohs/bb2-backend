@@ -27,7 +27,7 @@ public class BaseMapperImpl implements BaseMapper  {
         userDto.setSurname(user.getSurname());
         userDto.setCreationDate(user.getCreationDate());
         userDto.setEmail(user.getEmail());
-        userDto.setAuthorities((Collection<Role>) user.getAuthorities());
+        userDto.setRoles((Collection<Role>) user.getAuthorities());
 
         return userDto;
 

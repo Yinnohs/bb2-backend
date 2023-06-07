@@ -34,6 +34,6 @@ public class UserGetDTO implements IUser, Serializable {
 
     private LocalDate creationDate;
 
-    private Collection<Role> authorities;
+    private Collection<Role> roles;
 
 }
