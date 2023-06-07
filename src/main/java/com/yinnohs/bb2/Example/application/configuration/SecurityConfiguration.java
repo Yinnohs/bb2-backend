@@ -7,7 +7,6 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.yinnohs.bb2.Example.application.utils.RsaKeyProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,10 +15,10 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
@@ -27,20 +26,25 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
     private final RsaKeyProperties keys;
 
-    @Autowired
     public SecurityConfiguration(RsaKeyProperties keys){
         this.keys = keys;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return  new BCryptPasswordEncoder();
+        String idForEncode = "bcrypt";
+        Map<String, PasswordEncoder> encoderMap = new HashMap<>();
+        encoderMap.put(idForEncode, new BCryptPasswordEncoder());
+        return new DelegatingPasswordEncoder(idForEncode, encoderMap);
     }
 
     @Bean
@@ -54,7 +58,7 @@ public class SecurityConfiguration {
         httpContext
                 .csrf((crf)-> crf.disable())
                 .authorizeHttpRequests((auth) -> {
-                            auth.requestMatchers("/auth/**").permitAll();
+                            auth.requestMatchers("/api/v1/auth/**").permitAll();
                             auth.anyRequest().authenticated();
                         })
                 .oauth2ResourceServer((oath2)-> oath2.jwt(Customizer.withDefaults()))
