@@ -30,17 +30,12 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpContext) throws Exception{
         httpContext
-                .cors((httpSecurityCorsConfigurer)->
-                        httpSecurityCorsConfigurer.disable())
-                .csrf((httpSecurityCsrfConfigurer)->
-                        httpSecurityCsrfConfigurer.disable())
+                .csrf((crf)-> crf.disable())
+                .authorizeHttpRequests((auth) -> {
+                            auth.requestMatchers("/auth/**").permitAll();
+                            auth.anyRequest().authenticated();
+                        });
 
-                .authorizeHttpRequests((auth) ->
-                        auth
-                                .anyRequest()
-                                .permitAll()
-
-                );
                 return httpContext.build();
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -36,6 +38,16 @@ public class Bb2ExampleApplication {
 			User admin  = new User(1,"sexy administrator", "really sexy", "admin@admin.com", LocalDate.now(),roles,"1234",false,null);
 			userRepository.save(admin);
 
+		};
+	}
+
+	@Bean
+	public WebMvcConfigurer corsConfiguration(){
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("*").allowedOrigins("http://localhost:5050");
+			}
 		};
 	}
 }
