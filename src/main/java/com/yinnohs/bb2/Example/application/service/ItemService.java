@@ -1,6 +1,7 @@
 package com.yinnohs.bb2.Example.application.service;
 
 import com.yinnohs.bb2.Example.application.dto.item.CreateItemDTO;
+import com.yinnohs.bb2.Example.application.dto.item.DeactivateItemDTO;
 import com.yinnohs.bb2.Example.application.dto.item.UpdateItemDTO;
 import com.yinnohs.bb2.Example.application.dto.pricereduction.PriceReductionGetDTO;
 import com.yinnohs.bb2.Example.application.dto.supplier.SupplierGetDTO;
@@ -16,7 +17,6 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -55,6 +55,9 @@ public class ItemService {
         CompletableFuture<Collection<Supplier>> suppliersFuture = this.supplierService.findSuppliersByIdFuture(createItemDTO.getSupplierIds());
         CompletableFuture<Collection<PriceReduction>> priceReductionFuture = this.priceReductionService.findPriceReductionsByIdFuture(createItemDTO.getPriceReductionIds());
 
+        Collection<Long> priceReductionsIds = createItemDTO.getPriceReductionIds();
+        Collection<Long> suppliersIds = createItemDTO.getSupplierIds();
+
        return CompletableFuture.allOf(
                 creatorFuture,
                 suppliersFuture,
@@ -63,15 +66,19 @@ public class ItemService {
             Item item = this.mapper.createItemDTOToItem(createItemDTO);
             item.setItemState(ItemState.Active);
             item.setCreationDate(LocalDate.now());
-            item.setCreator(creatorFuture.join());
-            item.setSuppliers(suppliersFuture.join());
+            if (priceReductionsIds != null){
+                item.setCreator(creatorFuture.join());
+            }
+            if (suppliersIds != null) {
+                item.setSuppliers(suppliersFuture.join());
+            }
             item.setPriceReductions(priceReductionFuture.join());
 
-            Item futureResponse =  this.repository.save(item);
 
-            return  futureResponse;
+           return this.repository.save(item);
         });
     }
+
 
     public Item findItemById (Long itemId){
         if (itemId == null){
@@ -142,9 +149,8 @@ public class ItemService {
             Collection<PriceReduction> priceReductions =  this.priceReductionService.findPriceReductionsById(newPriceReductions);
             Collection<PriceReduction> currentReductions = currentItem.getPriceReductions();
 
-            for (PriceReduction priceReduction: priceReductions){
-                currentReductions.add(priceReduction);
-            }
+            currentReductions.addAll(priceReductions);
+
 
             currentItem.setPriceReductions(currentReductions);
         }
@@ -154,14 +160,38 @@ public class ItemService {
             Collection<Supplier> suppliers =  this.supplierService.findSuppliersById(newSuppliers);
             Collection<Supplier> currentSuppliers = currentItem.getSuppliers();
 
-            for (Supplier priceReduction: suppliers){
-                currentSuppliers.add(priceReduction);
-            }
+
+            currentSuppliers.addAll(suppliers);
+
 
             currentItem.setSuppliers(currentSuppliers);
         }
 
         return currentItem;
+
+    }
+
+    public void deactivateItem(DeactivateItemDTO deactivateItemDTO){
+        if (deactivateItemDTO == null){
+            return;
+        }
+
+        Item currentItem = this.repository.findById(deactivateItemDTO.getItemId()).orElse(null);
+
+        if (currentItem == null){
+            return;
+        }
+
+        User currentUser = this.userService.findUserById(deactivateItemDTO.getDeactivatedById());
+        if (currentUser == null){
+            return;
+        }
+
+        currentItem.setDeactivatedBy(currentUser);
+        currentItem.setDeactivateReason(deactivateItemDTO.getDeactivateReason());
+        currentItem.setItemState(ItemState.Discontinued);
+
+        this.repository.save(currentItem);
 
     }
 
