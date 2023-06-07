@@ -47,6 +47,7 @@ public class ItemController {
             List<ItemGetDTO> response = new ArrayList<>();
 
             for (Item item : items) {
+                item.getCreator();
                 ItemGetDTO itemGetDTO = this.mapper.itemToGetDTO(item);
                 response.add(itemGetDTO);
             }
@@ -67,6 +68,9 @@ public class ItemController {
             }
 
             Item item = this.itemService.findItemById(itemId);
+            item.getCreator();
+            item.getPriceReductions();
+            item.getSuppliers();
 
             ItemGetDTO response = this.mapper.itemToGetDTO(item);
 

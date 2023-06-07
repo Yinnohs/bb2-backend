@@ -137,6 +137,30 @@ public class ItemService {
             currentItem.setPriceReductions(priceReductions);
         }
 
+        Collection<Long> newPriceReductions = updateItemDTO.getNewPriceReductionsIds();
+        if (newPriceReductions != null && newPriceReductions.size()>0){
+            Collection<PriceReduction> priceReductions =  this.priceReductionService.findPriceReductionsById(newPriceReductions);
+            Collection<PriceReduction> currentReductions = currentItem.getPriceReductions();
+
+            for (PriceReduction priceReduction: priceReductions){
+                currentReductions.add(priceReduction);
+            }
+
+            currentItem.setPriceReductions(currentReductions);
+        }
+
+        Collection<Long> newSuppliers = updateItemDTO.getNewSuppliersIds();
+        if (newSuppliers != null && newSuppliers.size()>0){
+            Collection<Supplier> suppliers =  this.supplierService.findSuppliersById(newSuppliers);
+            Collection<Supplier> currentSuppliers = currentItem.getSuppliers();
+
+            for (Supplier priceReduction: suppliers){
+                currentSuppliers.add(priceReduction);
+            }
+
+            currentItem.setSuppliers(currentSuppliers);
+        }
+
         return currentItem;
 
     }

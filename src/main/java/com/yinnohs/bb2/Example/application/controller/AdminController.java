@@ -1,10 +1,14 @@
 package com.yinnohs.bb2.Example.application.controller;
 
+import com.yinnohs.bb2.Example.application.dto.pricereduction.CreatePriceReductionDTO;
+import com.yinnohs.bb2.Example.application.dto.pricereduction.PriceReductionGetDTO;
+import com.yinnohs.bb2.Example.application.dto.pricereduction.UpdatePriceReductionDTO;
 import com.yinnohs.bb2.Example.application.dto.supplier.CreateSupplierDTO;
 import com.yinnohs.bb2.Example.application.dto.supplier.SupplierGetDTO;
 import com.yinnohs.bb2.Example.application.dto.supplier.UpdateSupplierDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserGetDTO;
 import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
+import com.yinnohs.bb2.Example.application.model.PriceReduction;
 import com.yinnohs.bb2.Example.application.model.Supplier;
 import com.yinnohs.bb2.Example.application.model.User;
 import com.yinnohs.bb2.Example.application.service.ItemService;
@@ -117,6 +121,36 @@ public class AdminController {
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/discount/create")
+    public ResponseEntity<PriceReductionGetDTO> createPRiceReduction(@RequestBody() CreatePriceReductionDTO createPriceReductionDTO){
+        try {
+
+            PriceReduction newPriceReduction = this.mapper.createPriceReductionToPriceReduction(createPriceReductionDTO);
+            PriceReduction createdPriceReduction = this.priceReductionService.createPriceReduction(newPriceReduction);
+            PriceReductionGetDTO response = this.mapper.priceReductionToGetDTO(createdPriceReduction);
+
+            return  new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+    }
+
+    @PutMapping("/discount/update")
+    public ResponseEntity<PriceReductionGetDTO> updatePriceReduction (@RequestBody UpdatePriceReductionDTO updatePriceReductionDTO){
+        try {
+            PriceReduction createdPriceReduction = this.priceReductionService.updatePriceReduction(updatePriceReductionDTO);
+            PriceReductionGetDTO response = this.mapper.priceReductionToGetDTO(createdPriceReduction);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
 }

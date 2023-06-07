@@ -39,6 +39,13 @@ public class PriceReductionService {
        return  data;
     }
 
+    public Collection<PriceReduction> findPriceReductionsById(Collection<Long> priceReductionIds){
+        if(priceReductionIds == null || priceReductionIds.size() == 0){
+            return  null;
+        }
+            return this.repository.findAllById(priceReductionIds);
+    }
+
     public List<PriceReduction> findAllPriceReductions(){
         return  this.repository.findAll();
     }
