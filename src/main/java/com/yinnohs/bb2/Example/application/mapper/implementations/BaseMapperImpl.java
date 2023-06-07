@@ -9,10 +9,7 @@ import com.yinnohs.bb2.Example.application.dto.supplier.SupplierGetDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserCreateDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserGetDTO;
 import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
-import com.yinnohs.bb2.Example.application.model.Item;
-import com.yinnohs.bb2.Example.application.model.PriceReduction;
-import com.yinnohs.bb2.Example.application.model.Supplier;
-import com.yinnohs.bb2.Example.application.model.User;
+import com.yinnohs.bb2.Example.application.model.*;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -30,6 +27,8 @@ public class BaseMapperImpl implements BaseMapper  {
         userDto.setSurname(user.getSurname());
         userDto.setCreationDate(user.getCreationDate());
         userDto.setEmail(user.getEmail());
+        userDto.setAuthorities((Collection<Role>) user.getAuthorities());
+
         return userDto;
 
 
