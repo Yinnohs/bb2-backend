@@ -1,7 +1,9 @@
 package com.yinnohs.bb2.Example.application.service;
 
 import com.yinnohs.bb2.Example.application.dto.user.UserUpdateDTO;
+import com.yinnohs.bb2.Example.application.model.Role;
 import com.yinnohs.bb2.Example.application.model.User;
+import com.yinnohs.bb2.Example.application.repository.RoleRepository;
 import com.yinnohs.bb2.Example.application.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -18,20 +22,25 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
+    private PasswordEncoder encoder;
+    private RoleRepository roleRepository;
 
     @Autowired
-    private PasswordEncoder encoder;
+    public UserService(PasswordEncoder encoder, UserRepository userRepository, RoleRepository roleRepository){
+        this.userRepository = userRepository;
+        this.encoder = encoder;
+        this.roleRepository = roleRepository;
+    }
 
     public List<User> findAllUsers(){
-        List<User> users = this.repository.findAll();
+        List<User> users = this.userRepository.findAll();
 
         return users;
     }
 
     public User findUserById(long id){
-        Optional<User> user =  this.repository.findById(id);
+        Optional<User> user =  this.userRepository.findById(id);
         return user.orElse(null);
 
     }
@@ -42,7 +51,7 @@ public class UserService implements UserDetailsService {
         }
 
         CompletableFuture<User> futureData = CompletableFuture.supplyAsync(()->{
-            return this.repository.findById(userId).orElse(null);
+            return this.userRepository.findById(userId).orElse(null);
         });
 
         return futureData;
@@ -60,7 +69,7 @@ public class UserService implements UserDetailsService {
 
         user.setCreationDate(currentDate);
         
-        return this.repository.save(user);
+        return this.userRepository.save(user);
     }
 
     public User updateUser (UserUpdateDTO userData){
@@ -79,7 +88,49 @@ public class UserService implements UserDetailsService {
             user.setSurname(user.getSurname());
         }
 
-        return this.repository.save(user);
+        return this.userRepository.save(user);
+    }
+
+    public  User delegateUserToClient(Long userId){
+        if (userId == null){
+            return null;
+        }
+
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null){
+            throw new UsernameNotFoundException("this user does not exist");
+        }
+
+        Role clientRole = roleRepository.findByAuthority("CLIENT").orElse(null);
+        Collection<Role> roles = new HashSet<>();
+
+        roles.add(clientRole);
+
+        user.setAuthorities(roles);
+
+        return this.userRepository.save(user);
+    }
+
+    public  User delegateUserToAdmin(Long userId){
+        if (userId == null){
+            return null;
+        }
+
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null){
+            throw new UsernameNotFoundException("this user does not exist");
+        }
+
+        Role clientRole = roleRepository.findByAuthority("ADMIN").orElse(null);
+        Collection<Role> roles = new HashSet<>();
+
+        roles.add(clientRole);
+
+        user.setAuthorities(roles);
+
+        return this.userRepository.save(user);
     }
 
     public User softDeleteUser (long userId){
@@ -88,12 +139,12 @@ public class UserService implements UserDetailsService {
 
         user.setDeleted(true);
 
-        return this.repository.save(user);
+        return this.userRepository.save(user);
 
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-       return this.repository.findUserByEmail(username).orElseThrow(()-> new  UsernameNotFoundException("wrong credentials"));
+       return this.userRepository.findUserByEmail(username).orElseThrow(()-> new  UsernameNotFoundException("wrong credentials"));
     }
 }

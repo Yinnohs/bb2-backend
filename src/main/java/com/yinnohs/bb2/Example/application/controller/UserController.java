@@ -101,4 +101,37 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping("/update/admin/client/{id}")
+    public ResponseEntity<UserGetDTO> delegateUserToClient(@PathVariable("id") Long id ){
+        try {
+            if (id == null){
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+            User updatedUser = this.userService.delegateUserToClient(id);
+
+            UserGetDTO response = this.mapper.userToGetDTO(updatedUser);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PutMapping("/update/admin/{id}")
+    public ResponseEntity<UserGetDTO> delegateUserToAdmin(@PathVariable("id") Long userId ){
+        try {
+            if (userId == null){
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+            User updatedUser = this.userService.delegateUserToAdmin(userId);
+
+            UserGetDTO response = this.mapper.userToGetDTO(updatedUser);
+
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }catch(Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -34,8 +34,10 @@ public class Bb2ExampleApplication {
 
 			Set<Role> roles = new HashSet<>();
 			roles.add(adminRole);
+			String encodedPassword = encoder.encode("1234");
 
-			User admin  = new User(1,"sexy administrator", "really sexy", "admin@admin.com", LocalDate.now(),roles,"1234",false,null);
+			User admin  = new User(1,"sexy administrator", "really sexy", "admin@admin.com", LocalDate.now(),roles,encodedPassword,false,null);
+
 			userRepository.save(admin);
 
 		};
