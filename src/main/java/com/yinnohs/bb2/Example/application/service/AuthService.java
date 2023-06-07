@@ -1,8 +1,6 @@
 package com.yinnohs.bb2.Example.application.service;
 
 import com.yinnohs.bb2.Example.application.dto.auth.UserLoginDTO;
-import com.yinnohs.bb2.Example.application.dto.user.UserCreateDTO;
-import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
 import com.yinnohs.bb2.Example.application.model.Role;
 import com.yinnohs.bb2.Example.application.model.User;
 import com.yinnohs.bb2.Example.application.repository.RoleRepository;
@@ -12,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
