@@ -30,7 +30,7 @@ public class SupplierController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<SupplierGetDTO>> findAllPriceReductions () {
+    public ResponseEntity<List<SupplierGetDTO>> findAllSuppliers () {
         try {
 
             List<Supplier> suppliers = this.supplierService.findAllSuppliers();
@@ -64,38 +64,4 @@ public class SupplierController {
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<SupplierGetDTO> createSupplier (@RequestBody()CreateSupplierDTO createSupplierDTO){
-        try{
-            if(createSupplierDTO == null){
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-            }
-            Supplier newSupplier = mapper.createSupplierDTOToSupplier(createSupplierDTO);
-            Supplier createdSupplier = this.supplierService.createSupplier(newSupplier);
-            SupplierGetDTO response = this.mapper.supplierToGetDTO(createdSupplier);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<SupplierGetDTO> updateSupplier (UpdateSupplierDTO updateSupplierDTO){
-        try{
-            if(updateSupplierDTO == null){
-                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-            }
-            Supplier updatedSupplier = this.supplierService.updateSupplier(updateSupplierDTO);
-            SupplierGetDTO response = this.mapper.supplierToGetDTO(updatedSupplier);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }

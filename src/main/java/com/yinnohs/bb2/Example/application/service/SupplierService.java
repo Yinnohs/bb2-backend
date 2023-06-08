@@ -62,6 +62,14 @@ public class SupplierService {
 
         return futureSuppliers;
     }
+
+    public Collection<Supplier> findSuppliersById(Collection<Long> supplierIds ){
+        if (supplierIds == null ||supplierIds.size() == 0){
+            return null;
+        }
+            return this.repository.findAllById(supplierIds);
+    }
+
     public List<Supplier> findAllSuppliers(){
         return this.repository.findAll();
     }

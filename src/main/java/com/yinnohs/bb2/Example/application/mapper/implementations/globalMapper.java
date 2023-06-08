@@ -4,25 +4,25 @@ import com.yinnohs.bb2.Example.application.dto.item.CreateItemDTO;
 import com.yinnohs.bb2.Example.application.dto.item.ItemGetDTO;
 import com.yinnohs.bb2.Example.application.dto.pricereduction.CreatePriceReductionDTO;
 import com.yinnohs.bb2.Example.application.dto.pricereduction.PriceReductionGetDTO;
+import com.yinnohs.bb2.Example.application.dto.role.RoleGetDTO;
 import com.yinnohs.bb2.Example.application.dto.supplier.CreateSupplierDTO;
 import com.yinnohs.bb2.Example.application.dto.supplier.SupplierGetDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserCreateDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserGetDTO;
 import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
-import com.yinnohs.bb2.Example.application.model.Item;
-import com.yinnohs.bb2.Example.application.model.PriceReduction;
-import com.yinnohs.bb2.Example.application.model.Supplier;
-import com.yinnohs.bb2.Example.application.model.User;
+import com.yinnohs.bb2.Example.application.model.*;
 
 import java.util.Collection;
 import java.util.HashSet;
 
-public class BaseMapperImpl implements BaseMapper  {
+public class globalMapper implements BaseMapper  {
     @Override
     public UserGetDTO userToGetDTO(User user) {
         if (user == null){
             return null;
         }
+
+        Collection<Role> roles = (Collection<Role>) user.getAuthorities();
 
         UserGetDTO  userDto = new UserGetDTO();
         userDto.setUserId(user.getUserId());
@@ -30,9 +30,8 @@ public class BaseMapperImpl implements BaseMapper  {
         userDto.setSurname(user.getSurname());
         userDto.setCreationDate(user.getCreationDate());
         userDto.setEmail(user.getEmail());
+
         return userDto;
-
-
     }
 
     @Override
@@ -163,6 +162,7 @@ public class BaseMapperImpl implements BaseMapper  {
 
         itemDto.setItemId(item.getItemId());
         itemDto.setCode(item.getCode());
+        itemDto.setPrice(item.getPrice());
         itemDto.setDescription(item.getDescription());
         itemDto.setItemState(item.getItemState());
         itemDto.setCreationDate(item.getCreationDate());
@@ -174,7 +174,7 @@ public class BaseMapperImpl implements BaseMapper  {
         }
 
         Collection<Supplier> suppliers = item.getSuppliers();
-        if (suppliers != null || suppliers.size() > 0){
+        if (suppliers != null && suppliers.size() > 0){
             Collection<SupplierGetDTO> supplierGetDTOS = new HashSet<>();
             for (Supplier supplier : suppliers){
                 SupplierGetDTO supplierGetDTO = this.supplierToGetDTO(supplier);
@@ -184,7 +184,7 @@ public class BaseMapperImpl implements BaseMapper  {
         }
 
         Collection<PriceReduction> priceReductions = item.getPriceReductions();
-        if (priceReductions!= null || priceReductions.size() > 0){
+        if (priceReductions!= null && priceReductions.size() > 0){
             Collection<PriceReductionGetDTO> priceReductionGetDTOS = new HashSet<>();
             for (PriceReduction priceReduction : priceReductions){
                 PriceReductionGetDTO priceReductionGetDTO = this.priceReductionToGetDTO(priceReduction);
@@ -209,5 +209,33 @@ public class BaseMapperImpl implements BaseMapper  {
         item.setCreationDate(createItemDTO.getCreationDate());
 
         return  item;
+    }
+
+    @Override
+    public RoleGetDTO roleToGetRoleDTO(Role role) {
+        if(role == null){
+            return null;
+        }
+
+        RoleGetDTO  roleGetDTO = new RoleGetDTO();
+
+        roleGetDTO.setRoleId(role.getRoleId());
+        roleGetDTO.setAuthority(roleGetDTO.getAuthority());
+
+        return roleGetDTO;
+    }
+
+    @Override
+    public Role roleGetDTOToRole(RoleGetDTO roleGetDTO) {
+        if(roleGetDTO == null ){
+            return null;
+        }
+
+        Role role = new Role();
+
+        role.setRoleId(roleGetDTO.getRoleId());
+        role.setAuthority(roleGetDTO.getAuthority());
+
+        return role;
     }
 }

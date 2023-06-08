@@ -30,6 +30,9 @@ public class Item {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "price")
+    private Double price;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "item_state", nullable = false)
     private ItemState itemState;
@@ -60,5 +63,13 @@ public class Item {
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "price_reduction_id")
     )
     private Collection <PriceReduction> priceReductions;
+
+    @Column(name = "deactivate_reason")
+    private String deactivateReason;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "deactivated_by")
+    private  User deactivatedBy;
 
 }

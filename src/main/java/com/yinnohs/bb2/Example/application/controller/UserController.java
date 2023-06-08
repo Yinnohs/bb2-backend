@@ -69,21 +69,6 @@ public class UserController {
         }
     }
 
-    @PostMapping("/local/new")
-    public ResponseEntity<UserGetDTO> createUser(@RequestBody() @Validated UserCreateDTO payload){
-
-        try {
-
-            User newUser = this.mapper.userCreateDTOTouser(payload);
-            User createdUser = this.userService.createUser(newUser);
-            UserGetDTO response = this.mapper.userToGetDTO(createdUser);
-
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }catch(Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     @PutMapping("/update/{userId}")
     public ResponseEntity<UserGetDTO> updateUser(@RequestBody() @Validated UserUpdateDTO payload){
@@ -101,4 +86,6 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }

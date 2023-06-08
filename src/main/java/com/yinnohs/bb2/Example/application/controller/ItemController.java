@@ -1,6 +1,7 @@
 package com.yinnohs.bb2.Example.application.controller;
 
 import com.yinnohs.bb2.Example.application.dto.item.CreateItemDTO;
+import com.yinnohs.bb2.Example.application.dto.item.DeactivateItemDTO;
 import com.yinnohs.bb2.Example.application.dto.item.ItemGetDTO;
 import com.yinnohs.bb2.Example.application.dto.item.UpdateItemDTO;
 import com.yinnohs.bb2.Example.application.enums.ItemState;
@@ -38,13 +39,16 @@ public class ItemController {
             List<Item> items = null;
             if (state != null) {
                 items = this.itemService.findAllItems();
+            }else{
+                items = this.itemService.findAllItemsByState(state);
             }
 
-            items = this.itemService.findAllItemsByState(state);
+
 
             List<ItemGetDTO> response = new ArrayList<>();
 
             for (Item item : items) {
+                item.getCreator();
                 ItemGetDTO itemGetDTO = this.mapper.itemToGetDTO(item);
                 response.add(itemGetDTO);
             }
@@ -65,6 +69,9 @@ public class ItemController {
             }
 
             Item item = this.itemService.findItemById(itemId);
+            item.getCreator();
+            item.getPriceReductions();
+            item.getSuppliers();
 
             ItemGetDTO response = this.mapper.itemToGetDTO(item);
 
@@ -113,6 +120,23 @@ public class ItemController {
             ItemGetDTO response = this.mapper.itemToGetDTO(item);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PatchMapping("/deactivate")
+    public ResponseEntity<String> deactivateItem(@RequestBody DeactivateItemDTO deactivateItemDTO){
+        try {
+            if(deactivateItemDTO == null){
+                return  new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+            }
+
+            this.itemService.deactivateItem(deactivateItemDTO);
+
+            return new ResponseEntity<>("Item has been deactivated ", HttpStatus.OK);
 
         } catch (Exception e) {
             e.printStackTrace();

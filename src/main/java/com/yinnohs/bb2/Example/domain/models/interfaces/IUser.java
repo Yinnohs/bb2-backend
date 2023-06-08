@@ -3,7 +3,7 @@ package com.yinnohs.bb2.Example.domain.models.interfaces;
 import java.time.LocalDate;
 
 public interface IUser {
-      long userId= 0;
+      Long  userId = null;
       String name = "";
 
       String surname = "";

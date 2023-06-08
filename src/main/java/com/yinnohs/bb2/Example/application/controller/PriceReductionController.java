@@ -70,33 +70,5 @@ public class PriceReductionController {
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<PriceReductionGetDTO> createPRiceReduction(@RequestBody()CreatePriceReductionDTO createPriceReductionDTO){
-        try {
 
-            PriceReduction newPriceReduction = this.mapper.createPriceReductionToPriceReduction(createPriceReductionDTO);
-            PriceReduction createdPriceReduction = this.priceReductionService.createPriceReduction(newPriceReduction);
-            PriceReductionGetDTO response = this.mapper.priceReductionToGetDTO(createdPriceReduction);
-
-            return  new ResponseEntity<>(response, HttpStatus.OK);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-
-        }
-    }
-
-    @PutMapping("/update")
-    public ResponseEntity<PriceReductionGetDTO> updatePriceReduction (@RequestBody UpdatePriceReductionDTO updatePriceReductionDTO){
-        try {
-            PriceReduction createdPriceReduction = this.priceReductionService.updatePriceReduction(updatePriceReductionDTO);
-            PriceReductionGetDTO response = this.mapper.priceReductionToGetDTO(createdPriceReduction);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-
-        }
-    }
 }

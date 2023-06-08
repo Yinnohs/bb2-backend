@@ -5,6 +5,7 @@ import com.yinnohs.bb2.Example.application.dto.pricereduction.PriceReductionGetD
 import com.yinnohs.bb2.Example.application.dto.supplier.SupplierGetDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserGetDTO;
 import com.yinnohs.bb2.Example.application.enums.ItemState;
+import com.yinnohs.bb2.Example.application.model.PriceReduction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,9 @@ public class UpdateItemDTO {
     @JsonProperty("description")
     private String description;
 
+    @JsonProperty("price")
+    private Double price;
+
     @JsonProperty("item_state")
     private ItemState itemState;
 
@@ -37,6 +41,12 @@ public class UpdateItemDTO {
     @JsonProperty("supplier")
     private Collection<SupplierGetDTO> suppliers;
 
-    @JsonProperty("priceReductions")
+    @JsonProperty("price_reductions")
     private Collection <PriceReductionGetDTO> priceReductions;
+
+    @JsonProperty("new_suppliers")
+    private Collection<Long> newSuppliersIds;
+
+    @JsonProperty("new_price_reductions")
+    private Collection<Long>  newPriceReductionsIds;
 }
