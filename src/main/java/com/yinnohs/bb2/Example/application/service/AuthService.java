@@ -2,6 +2,7 @@ package com.yinnohs.bb2.Example.application.service;
 
 import com.yinnohs.bb2.Example.application.dto.auth.UserLoginDTO;
 import com.yinnohs.bb2.Example.application.dto.auth.UserLoginResponseDTO;
+import com.yinnohs.bb2.Example.application.dto.user.UserGetDTO;
 import com.yinnohs.bb2.Example.application.mapper.interfaces.BaseMapper;
 import com.yinnohs.bb2.Example.application.model.Role;
 import com.yinnohs.bb2.Example.application.model.User;
@@ -45,7 +46,7 @@ public class AuthService {
 
         String hashedPassword = encoder.encode(user.getPassword());
 
-        Role clientRole = this.roleRepository.findByAuthority("CLIENT").orElse(null);
+        Role clientRole = this.roleRepository.findById(2l).orElse(null);
         if(clientRole == null){
             return  null;
         }
@@ -74,9 +75,11 @@ public class AuthService {
 
             User currentUser = this.userRepository.findUserByEmail(userLoginDTO.getEmail()).orElse(null);
 
+
             if (currentUser != null){
                 data.setJwt(token);
-                data.setUser(this.mapper.userToGetDTO(currentUser));
+                UserGetDTO userGetDTO = this.mapper.userToGetDTO(currentUser);
+                data.setUser(userGetDTO);
             }
 
             return data;

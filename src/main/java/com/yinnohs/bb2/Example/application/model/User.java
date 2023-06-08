@@ -38,7 +38,7 @@ public class User implements IUser, UserDetails {
     @Column(name = "creation_date")
     private LocalDate creationDate;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE})
     @JoinTable(
             name = "user_role",
             joinColumns = {@JoinColumn(name = "user_id")},

@@ -65,7 +65,5 @@ public class AuthController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//
-//    @PostMapping("/logout")
 
 }

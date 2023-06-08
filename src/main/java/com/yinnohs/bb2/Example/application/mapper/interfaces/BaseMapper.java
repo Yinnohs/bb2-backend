@@ -4,14 +4,13 @@ import com.yinnohs.bb2.Example.application.dto.item.CreateItemDTO;
 import com.yinnohs.bb2.Example.application.dto.item.ItemGetDTO;
 import com.yinnohs.bb2.Example.application.dto.pricereduction.CreatePriceReductionDTO;
 import com.yinnohs.bb2.Example.application.dto.pricereduction.PriceReductionGetDTO;
+import com.yinnohs.bb2.Example.application.dto.role.RoleGetDTO;
 import com.yinnohs.bb2.Example.application.dto.supplier.CreateSupplierDTO;
 import com.yinnohs.bb2.Example.application.dto.supplier.SupplierGetDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserCreateDTO;
 import com.yinnohs.bb2.Example.application.dto.user.UserGetDTO;
-import com.yinnohs.bb2.Example.application.model.Item;
-import com.yinnohs.bb2.Example.application.model.PriceReduction;
-import com.yinnohs.bb2.Example.application.model.Supplier;
-import com.yinnohs.bb2.Example.application.model.User;
+import com.yinnohs.bb2.Example.application.model.*;
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
@@ -31,7 +30,9 @@ public interface BaseMapper {
     PriceReduction priceReductionGetDTOToPriceReduction(PriceReductionGetDTO priceReductionGetDTO);
 
     ItemGetDTO itemToGetDTO(Item item);
-
     Item createItemDTOToItem(CreateItemDTO createItemDTO);
+
+    RoleGetDTO roleToGetRoleDTO(Role role);
+    Role roleGetDTOToRole(RoleGetDTO roleGetDTO);
 
 }

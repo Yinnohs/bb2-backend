@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @AllArgsConstructor
@@ -46,17 +45,17 @@ public class ItemService {
     private BaseMapper mapper;
 
 @Transactional
-    public CompletableFuture<Item> createItem (CreateItemDTO createItemDTO) throws ExecutionException, InterruptedException {
+    public CompletableFuture<Item> createItem (CreateItemDTO createItemDTO) {
         if (createItemDTO == null){
             return null;
         }
 
-        CompletableFuture<User> creatorFuture = this.userService.findUserByIdFuture(createItemDTO.getCreatorId());
-        CompletableFuture<Collection<Supplier>> suppliersFuture = this.supplierService.findSuppliersByIdFuture(createItemDTO.getSupplierIds());
-        CompletableFuture<Collection<PriceReduction>> priceReductionFuture = this.priceReductionService.findPriceReductionsByIdFuture(createItemDTO.getPriceReductionIds());
-
-        Collection<Long> priceReductionsIds = createItemDTO.getPriceReductionIds();
         Collection<Long> suppliersIds = createItemDTO.getSupplierIds();
+        Collection<Long> priceReductionsIds = createItemDTO.getPriceReductionIds();
+
+        CompletableFuture<User> creatorFuture = this.userService.findUserByIdFuture(createItemDTO.getCreatorId());
+        CompletableFuture<Collection<Supplier>> suppliersFuture = suppliersIds == null  ?   CompletableFuture.supplyAsync(HashSet::new) : this.supplierService.findSuppliersByIdFuture(createItemDTO.getSupplierIds());
+        CompletableFuture<Collection<PriceReduction>>  priceReductionFuture = priceReductionsIds == null ?   CompletableFuture.supplyAsync(HashSet::new) : this.priceReductionService.findPriceReductionsByIdFuture(createItemDTO.getPriceReductionIds());
 
        return CompletableFuture.allOf(
                 creatorFuture,
@@ -66,12 +65,8 @@ public class ItemService {
             Item item = this.mapper.createItemDTOToItem(createItemDTO);
             item.setItemState(ItemState.Active);
             item.setCreationDate(LocalDate.now());
-            if (priceReductionsIds != null){
-                item.setCreator(creatorFuture.join());
-            }
-            if (suppliersIds != null) {
-                item.setSuppliers(suppliersFuture.join());
-            }
+            item.setCreator(creatorFuture.join());
+            item.setSuppliers(suppliersFuture.join());
             item.setPriceReductions(priceReductionFuture.join());
 
 
