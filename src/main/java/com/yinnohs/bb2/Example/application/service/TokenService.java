@@ -31,7 +31,7 @@ public class TokenService {
     public String generateJwt(Authentication auth){
 
         Instant now = Instant.now();
-        Instant expired = now.plus(40, ChronoUnit.MINUTES);
+        Instant expireAt = now.plus(1, ChronoUnit.DAYS);
 
         String scope = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -42,7 +42,7 @@ public class TokenService {
                 .issuedAt(now)
                 .subject(auth.getName())
                 .claim("roles", scope)
-                .expiresAt(expired)
+                .expiresAt(expireAt)
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
