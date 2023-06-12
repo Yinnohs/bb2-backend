@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.yinnohs.bb2.Example.domain.models.interfaces.IUser;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,13 +47,13 @@ public class User implements IUser, UserDetails {
     private String password;
 
     @JsonIgnore
-    @Column(name = "is_deleted", nullable = true)
+    @Column(name = "is_deleted")
     private  Boolean isDeleted;
 
-    @JsonBackReference
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "item_id")
-    private Collection<Item> items;
+//    @JsonBackReference
+//    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+//    @JoinColumn(name = "item_id")
+//    private Collection<Item> items;
 
 
     public  User(){
@@ -75,7 +71,7 @@ public class User implements IUser, UserDetails {
         this.authorities = authorities;
         this.password = password;
         this.isDeleted = isDeleted;
-        this.items = items;
+//        this.items = items;
     }
 
     @Override
@@ -116,9 +112,9 @@ public class User implements IUser, UserDetails {
         return isDeleted;
     }
 
-    public Collection<Item> getItems() {
-        return items;
-    }
+//    public Collection<Item> getItems() {
+//        return items;
+//    }
 
     public  void setEmail(String email){
         this.email = email;
@@ -149,9 +145,9 @@ public class User implements IUser, UserDetails {
         isDeleted = deleted;
     }
 
-    public void setItems(Collection<Item> items) {
-        this.items = items;
-    }
+//    public void setItems(Collection<Item> items) {
+//        this.items = items;
+//    }
 
     @Override
     public String getUsername() {

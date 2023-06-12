@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @Transactional
@@ -81,7 +82,7 @@ public class AuthService {
                 UserGetDTO userGetDTO = this.mapper.userToGetDTO(currentUser);
                 data.setUser(userGetDTO);
             }
-
+            List<Role> roles= roleRepository.findAll();
             return data;
 
         }catch(Exception e){

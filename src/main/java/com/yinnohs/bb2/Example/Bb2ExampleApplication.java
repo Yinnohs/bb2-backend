@@ -29,8 +29,8 @@ public class Bb2ExampleApplication {
 			if (roleRepository.findByAuthority("ADMIN").isPresent()){
 				return;
 			}
-			Role adminRole = roleRepository.save(new Role(1l,"ADMIN"));
-			roleRepository.save(new Role(2l,"CLIENT"));
+			Role adminRole = roleRepository.save(new Role(Long.valueOf(1),"ADMIN"));
+			roleRepository.save(new Role(Long.valueOf(2),"CLIENT"));
 
 			Set<Role> roles = new HashSet<>();
 			roles.add(adminRole);
