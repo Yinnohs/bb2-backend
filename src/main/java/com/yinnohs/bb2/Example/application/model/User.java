@@ -43,7 +43,7 @@ public class User implements IUser, UserDetails {
     private Collection<Role> authorities;
 
     @JsonIgnore
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
     @JsonIgnore

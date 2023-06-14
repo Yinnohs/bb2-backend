@@ -64,12 +64,12 @@ public class Item {
     )
     private Collection <PriceReduction> priceReductions;
 
-//    @Column(name = "deactivate_reason")
-//    private String deactivateReason;
-//
-//    @JsonBackReference
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-//    @JoinColumn(name = "deactivated_by")
-//    private  User deactivatedBy;
+    @Column(name = "deactivate_reason")
+    private String deactivateReason;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "deactivated_by")
+    private  User deactivatedBy;
 
 }
