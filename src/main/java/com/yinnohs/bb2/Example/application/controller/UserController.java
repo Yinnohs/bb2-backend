@@ -70,7 +70,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/update/{userId}")
+    @PutMapping("/update")
     public ResponseEntity<UserGetDTO> updateUser(@RequestBody() @Validated UserUpdateDTO payload){
         try {
             if (payload == null){

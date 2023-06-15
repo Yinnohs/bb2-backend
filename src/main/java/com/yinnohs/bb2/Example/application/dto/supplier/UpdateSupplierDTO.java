@@ -18,5 +18,5 @@ public class UpdateSupplierDTO {
     private String name;
 
     @JsonProperty("country")
-    private String Country;
+    private String country;
 }
