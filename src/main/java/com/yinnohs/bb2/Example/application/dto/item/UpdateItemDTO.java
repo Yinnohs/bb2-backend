@@ -32,9 +32,6 @@ public class UpdateItemDTO {
     @JsonProperty("item_state")
     private ItemState itemState;
 
-    @JsonProperty("creation_date")
-    private LocalDate creationDate;
-
     @JsonProperty("creator")
     private UserGetDTO creator;
 

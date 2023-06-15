@@ -108,10 +108,6 @@ public class ItemService {
             currentItem.setDescription(description);
         }
 
-        LocalDate creationDate = updateItemDTO.getCreationDate();
-        if(creationDate != null){
-            currentItem.setCreationDate(creationDate);
-        }
 
         UserGetDTO creator = updateItemDTO.getCreator();
         if (creator != null ){
@@ -162,7 +158,7 @@ public class ItemService {
             currentItem.setSuppliers(currentSuppliers);
         }
 
-        return currentItem;
+        return this.repository.save(currentItem);
 
     }
 

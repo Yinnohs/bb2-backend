@@ -42,9 +42,9 @@ public class ItemGetDTO {
     @JsonProperty("creator")
     private UserGetDTO creator;
 
-    @JsonProperty("supplier")
+    @JsonProperty("suppliers")
     private Collection<SupplierGetDTO> suppliers;
 
-    @JsonProperty("priceReductions")
+    @JsonProperty("price_reductions")
     private Collection <PriceReductionGetDTO> priceReductions;
 }

@@ -43,7 +43,7 @@ public class Item {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "creator")
+    @JoinColumn(name = "creator", nullable = false)
     private  User creator;
 
     @JsonBackReference

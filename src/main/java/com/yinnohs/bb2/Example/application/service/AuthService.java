@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @Transactional
@@ -44,6 +45,11 @@ public class AuthService {
 
     public User registerLocalUser(User user){
 
+        User userExist = userRepository.findUserByEmail(user.getEmail()).orElse(null);
+        if (userExist != null){
+            return null;
+        }
+
         String hashedPassword = encoder.encode(user.getPassword());
 
         Role clientRole = this.roleRepository.findById(2l).orElse(null);
@@ -59,7 +65,10 @@ public class AuthService {
         user.setDeleted(false);
         user.setCreationDate(LocalDate.now());
 
-        return this.userRepository.save(user);
+
+        return  this.userRepository.save(user);
+
+
     }
 
     public UserLoginResponseDTO localLogin(UserLoginDTO userLoginDTO){
@@ -81,11 +90,11 @@ public class AuthService {
                 UserGetDTO userGetDTO = this.mapper.userToGetDTO(currentUser);
                 data.setUser(userGetDTO);
             }
-
+            List<Role> roles= roleRepository.findAll();
             return data;
 
         }catch(Exception e){
-
+            e.printStackTrace();
             return data;
         }
 

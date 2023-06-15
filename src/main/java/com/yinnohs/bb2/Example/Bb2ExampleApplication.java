@@ -8,8 +8,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDate;
@@ -29,8 +31,8 @@ public class Bb2ExampleApplication {
 			if (roleRepository.findByAuthority("ADMIN").isPresent()){
 				return;
 			}
-			Role adminRole = roleRepository.save(new Role(1l,"ADMIN"));
-			roleRepository.save(new Role(2l,"CLIENT"));
+			Role adminRole = roleRepository.save(new Role(Long.valueOf(1),"ADMIN"));
+			roleRepository.save(new Role(Long.valueOf(2),"CLIENT"));
 
 			Set<Role> roles = new HashSet<>();
 			roles.add(adminRole);
@@ -48,7 +50,7 @@ public class Bb2ExampleApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("*").allowedOrigins("http://localhost:5053");
+				registry.addMapping("/**").allowedMethods("HEAD", "GET", "PUT", "POST", "DELETE", "PATCH");
 			}
 		};
 	}

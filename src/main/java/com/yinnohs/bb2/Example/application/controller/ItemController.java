@@ -33,11 +33,11 @@ public class ItemController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<List<ItemGetDTO>> findAllItems(@RequestParam(name = "state") String stateStr) {
+    public ResponseEntity<List<ItemGetDTO>> findAllItems(@RequestParam(name = "state", required = false) String stateStr) {
         try {
             ItemState state = ItemState.getFromString(stateStr);
             List<Item> items = null;
-            if (state != null) {
+            if (state == null) {
                 items = this.itemService.findAllItems();
             }else{
                 items = this.itemService.findAllItemsByState(state);
