@@ -180,4 +180,15 @@ public class AdminController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 
         }}
+
+    @DeleteMapping("/price-reduction/delete/{id}")
+    public ResponseEntity<String> deletePriceReduction(@PathVariable("id") Long id){
+        try {
+            this.priceReductionService.deletePriceReductionById(id);
+            return new ResponseEntity<>("Deleted successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }}
 }
