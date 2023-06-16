@@ -76,16 +76,23 @@ public class UserService implements UserDetailsService {
 
         User user = this.findUserById(userData.getUserId());
 
+        if (user == null) return null;
+
         if (userData.getName() != null){
             user.setName(userData.getName());
         }
 
         if (userData.getEmail() != null){
-            user.setEmail(user.getEmail());
+            user.setEmail(userData.getEmail());
         }
 
         if (userData.getSurname() != null){
-            user.setSurname(user.getSurname());
+            user.setSurname(userData.getSurname());
+        }
+        String password = userData.getPassword().trim();
+        if(password != null && !password.isEmpty()){
+            String hashedPassword = this.encoder.encode(password);
+            user.setPassword(password);
         }
 
         return this.userRepository.save(user);

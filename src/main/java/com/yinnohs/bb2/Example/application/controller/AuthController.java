@@ -28,9 +28,6 @@ public class AuthController {
 
 
 
-//    @PostMapping("/local/login")
-//    public ResponseEntity<Void> login
-//
     @PostMapping("/local/register")
     public ResponseEntity<UserGetDTO> registerLocal(@RequestBody() UserCreateDTO payload){
         try {

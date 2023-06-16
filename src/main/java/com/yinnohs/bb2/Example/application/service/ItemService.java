@@ -186,4 +186,11 @@ public class ItemService {
 
     }
 
+    public void deleteItem (Long itemId){
+        if(itemId == null){
+            return;
+        }
+        this.repository.deleteById(itemId);
+    }
+
 }

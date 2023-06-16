@@ -34,12 +34,12 @@ public class SupplierService {
         Supplier currentSupplier = this.findSupplierById(updateSupplierDTO.getSupplierId());
 
         String name = updateSupplierDTO.getName();
-        if (name != null || name.isEmpty()){
-            currentSupplier.setName(updateSupplierDTO.getName());
+        if (name != null && !name.isEmpty()){
+            currentSupplier.setName(name);
         }
 
         String country = updateSupplierDTO.getCountry();
-        if (country != null || !country.isEmpty() ){
+        if (country != null && !country.isEmpty() ){
             currentSupplier.setCountry(country);
         }
 
@@ -72,5 +72,12 @@ public class SupplierService {
 
     public List<Supplier> findAllSuppliers(){
         return this.repository.findAll();
+    }
+
+    public void deleteSupplierById(Long id){
+        if (id == null) return;
+
+        this.repository.deleteById(id);
+
     }
 }

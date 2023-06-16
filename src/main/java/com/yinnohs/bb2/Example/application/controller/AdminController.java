@@ -108,7 +108,7 @@ public class AdminController {
     }
 
     @PutMapping("/supplier/update")
-    public ResponseEntity<SupplierGetDTO> updateSupplier (UpdateSupplierDTO updateSupplierDTO){
+    public ResponseEntity<SupplierGetDTO> updateSupplier (@RequestBody() UpdateSupplierDTO updateSupplierDTO){
         try{
             if(updateSupplierDTO == null){
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -117,6 +117,22 @@ public class AdminController {
             SupplierGetDTO response = this.mapper.supplierToGetDTO(updatedSupplier);
 
             return new ResponseEntity<>(response, HttpStatus.OK);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/supplier/delete/{id}")
+    public ResponseEntity<String> deleteSupplier (@PathVariable("id") Long id){
+        try{
+            if(id == null){
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+            this.supplierService.deleteSupplierById(id);
+
+            return new ResponseEntity<>("Delete successfully", HttpStatus.OK);
 
         }catch (Exception e){
             e.printStackTrace();
@@ -153,4 +169,15 @@ public class AdminController {
 
         }
     }
+
+    @DeleteMapping("/items/delete/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable("id") Long id){
+        try {
+            this.itemService.deleteItem(id);
+            return new ResponseEntity<>("Deleted s successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }}
 }

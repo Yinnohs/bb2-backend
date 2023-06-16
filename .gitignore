@@ -34,4 +34,4 @@ build/
 
 
 ### keys ###
-jwtkey.pem
+jwtkey.txt
