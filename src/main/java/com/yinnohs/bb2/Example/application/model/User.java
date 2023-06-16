@@ -112,9 +112,6 @@ public class User implements IUser, UserDetails {
         return isDeleted;
     }
 
-//    public Collection<Item> getItems() {
-//        return items;
-//    }
 
     public  void setEmail(String email){
         this.email = email;

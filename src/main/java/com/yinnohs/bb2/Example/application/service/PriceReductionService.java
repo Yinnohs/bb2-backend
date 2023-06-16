@@ -78,4 +78,10 @@ public class PriceReductionService {
 
         return this.repository.save(currentPriceReduction);
     }
+
+    public void deletePriceReductionById (Long id){
+        if(id == null) return;
+
+        this.repository.deleteById(id);
+    }
 }
